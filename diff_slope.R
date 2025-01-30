@@ -54,13 +54,26 @@ mydata<-na.omit(mydata)
 mydata$realm <- as.factor(mydata$realm)
 
 # Fit the linear model with interaction
-model <- lm(med_rich ~ vas_rich * realm, data = mydata)
+model1 <- lm(med_rich ~ vas_rich * realm, data = mydata)
 
 # Summary of the model
-summary(model)
+summary(model1)
 
-# Perform ANOVA to test the interaction
-anova(model)
+# Perform ANOVA to test if the interaction term is significant
+anova(model1)
+
+# Fit another linear model without the interaction but with region as a covariate
+model2 <- lm(med_rich ~ vas_rich + realm, data = mydata)
+
+# ANOVA (analysis of variance) to compare the two models
+anova (model2, model1)
+
+#If the p-value is significant (typically < 0.05), it suggests that the interaction term (vas_rich:realm) 
+#significantly improves model fit, meaning region modifies the effect of vascular plant diversity on medicinal plant diversity.
+
+#Check the significance of the realm in model2
+summary(model2)
+#If the region coefficient is statistically significant (p < 0.05), it means that   region significantly affects medicinal plant diversity.
 
 # Compare slopes using emmeans
 library(emmeans)
